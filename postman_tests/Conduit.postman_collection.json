@@ -1,0 +1,819 @@
+{
+	"info": {
+		"_postman_id": "0574ad8a-a525-43ae-8e1e-5fd9756037f4",
+		"name": "Conduit",
+		"description": "Collection for testing the Conduit API\n\nhttps://github.com/gothinkster/realworld",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {",
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"client\" property'] = responseJSON.hasOwnProperty('client');",
+									"",
+									"var client = responseJSON.client || {};",
+									"",
+									"tests['Client has \"email\" property'] = client.hasOwnProperty('email');",
+									"tests['Client has \"name\" property'] = client.hasOwnProperty('name');",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"client\":{\"email\":\"{{EMAIL}}\", \"password\":\"{{PASSWORD}}\", \"name\":\"{{USERNAME}}\"}}"
+						},
+						"url": {
+							"raw": "{{APIURL}}/clients",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"client\" property'] = responseJSON.hasOwnProperty('client');",
+									"",
+									"var client = responseJSON.client || {};",
+									"",
+									"tests['Client has \"email\" property'] = client.hasOwnProperty('email');",
+									"tests['Client has \"name\" property'] = client.hasOwnProperty('name');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"client\":{\"email\":\"{{EMAIL}}\", \"password\":\"{{PASSWORD}}\"}}"
+						},
+						"url": {
+							"raw": "{{APIURL}}/clients/login",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"clients",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login and Remember Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7674032-bf09-4ae7-8224-4afa2fb1a9f9",
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"client\" property'] = responseJSON.hasOwnProperty('client');",
+									"",
+									"var client = responseJSON.client || {};",
+									"",
+									"tests['Client has \"email\" property'] = client.hasOwnProperty('email');",
+									"tests['Client has \"name\" property'] = client.hasOwnProperty('name');",
+									"",
+									"if(tests['Client has \"token\" property']){",
+									"    pm.globals.set('token', client.token);",
+									"}",
+									"",
+									"tests['Global variable \"token\" has been set'] = pm.globals.get('token') === client.token;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"client\":{\"email\":\"{{EMAIL}}\", \"password\":\"{{PASSWORD}}\"}}"
+						},
+						"url": {
+							"raw": "{{APIURL}}/clients/login",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"clients",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"client\" property'] = responseJSON.hasOwnProperty('client');",
+									"",
+									"var client = responseJSON.client || {};",
+									"",
+									"tests['Client has \"email\" property'] = client.hasOwnProperty('email');",
+									"tests['Client has \"name\" property'] = client.hasOwnProperty('name');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/client",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"client\" property'] = responseJSON.hasOwnProperty('client');",
+									"",
+									"var client = responseJSON.client || {};",
+									"",
+									"tests['Client has \"email\" property'] = client.hasOwnProperty('email');",
+									"tests['Client has \"name\" property'] = client.hasOwnProperty('name');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"client\":{\"email\":\"{{EMAIL}}\"}}"
+						},
+						"url": {
+							"raw": "{{APIURL}}/client",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "All Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var is200Response = responseCode.code === 200;",
+									"",
+									"tests['Response code is 200 OK'] = is200Response;",
+									"",
+									"if(is200Response){",
+									"    var responseJSON = JSON.parse(responseBody);",
+									"",
+									"    tests['Response contains \"products\" property'] = responseJSON.hasOwnProperty('products');",
+									"    tests['Response contains \"productsCount\" property'] = responseJSON.hasOwnProperty('productsCount');",
+									"    tests['productsCount is an integer'] = Number.isInteger(responseJSON.productsCount);",
+									"",
+									"    if(responseJSON.products.length){",
+									"        var product = responseJSON.products[0];",
+									"",
+									"        tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"        tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products Favorited by client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var is200Response = responseCode.code === 200;",
+									"",
+									"tests['Response code is 200 OK'] = is200Response;",
+									"",
+									"if(is200Response){",
+									"    var responseJSON = JSON.parse(responseBody);",
+									"    ",
+									"    tests['Response contains \"products\" property'] = responseJSON.hasOwnProperty('products');",
+									"    tests['Response contains \"productsCount\" property'] = responseJSON.hasOwnProperty('productsCount');",
+									"    tests['productsCount is an integer'] = Number.isInteger(responseJSON.productsCount);",
+									"",
+									"    if(responseJSON.products.length){",
+									"        var product = responseJSON.products[0];",
+									"",
+									"        tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"        tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products?favorited=jane",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "favorited",
+									"value": "jane"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products Favorited by client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var is200Response = responseCode.code === 200;",
+									"",
+									"tests['Response code is 200 OK'] = is200Response;",
+									"",
+									"if(is200Response){",
+									"    var responseJSON = JSON.parse(responseBody);",
+									"    ",
+									"    tests['Response contains \"products\" property'] = responseJSON.hasOwnProperty('products');",
+									"    tests['Response contains \"productsCount\" property'] = responseJSON.hasOwnProperty('productsCount');",
+									"    tests['productsCount is an integer'] = Number.isInteger(responseJSON.productsCount);",
+									"",
+									"    if(responseJSON.products.length){",
+									"        var product = responseJSON.products[0];",
+									"",
+									"        tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"        tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products?favorited=jane",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "favorited",
+									"value": "jane"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products Favorited by client with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var is200Response = responseCode.code === 200;",
+									"",
+									"tests['Response code is 200 OK'] = is200Response;",
+									"",
+									"if(is200Response){",
+									"    var responseJSON = JSON.parse(responseBody);",
+									"    ",
+									"    tests['Response contains \"products\" property'] = responseJSON.hasOwnProperty('products');",
+									"    tests['Response contains \"productsCount\" property'] = responseJSON.hasOwnProperty('productsCount');",
+									"    tests['productsCount is an integer'] = Number.isInteger(responseJSON.productsCount);",
+									"",
+									"    if(responseJSON.products.length){",
+									"        var product = responseJSON.products[0];",
+									"",
+									"        tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"        tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products?favorited=jane",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "favorited",
+									"value": "jane"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Product by slug",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"product\" property'] = responseJSON.hasOwnProperty('product');",
+									"",
+									"var product = responseJSON.product || {};",
+									"",
+									"tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products/{{slug}}",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products",
+								"{{slug}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {",
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"product\" property'] = responseJSON.hasOwnProperty('product');",
+									"",
+									"var product = responseJSON.product || {};",
+									"",
+									"tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"product\":{\"body\":\"With two hands\"}}"
+						},
+						"url": {
+							"raw": "{{APIURL}}/products/{{slug}}",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products",
+								"{{slug}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Favorite Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"product\" property'] = responseJSON.hasOwnProperty('product');",
+									"",
+									"var product = responseJSON.product || {};",
+									"",
+									"tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products/{{slug}}/favorite",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products",
+								"{{slug}}",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unfavorite Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);",
+									"",
+									"tests['Response contains \"product\" property'] = responseJSON.hasOwnProperty('product');",
+									"",
+									"var product = responseJSON.product || {};",
+									"",
+									"tests['Product has \"title\" property'] = product.hasOwnProperty('title');",
+									"tests['Product has \"slug\" property'] = product.hasOwnProperty('slug');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products/{{slug}}/favorite",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products",
+								"{{slug}}",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APIURL}}/products/{{slug}}",
+							"host": [
+								"{{APIURL}}"
+							],
+							"path": [
+								"products",
+								"{{slug}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "67853a4a-e972-4573-a295-dad12a46a9d7",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3057f989-15e4-484e-b8fa-a041043d0ac0",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+
+	]
+}

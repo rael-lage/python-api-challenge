@@ -1,0 +1,9 @@
+.env
+.env.example
+.git*
+Procfile
+requirements.txt
+runtime.txt
+README.rst
+postman_tests
+__pycache__
